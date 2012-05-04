@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="all">
+	<property name="version" value="ver0.1"/>
+	<property name="basedir" value="."/>
+	<property name="bin.dir" value="${basedir}/bin"/>
+ 
+	<target name="clean">
+		<delete dir="${bin.dir}"/>
+	</target>
+
+	<target name="compile" depends="">
+   	</target>
+
+	<target name="all" depends="clean, compile"/>
+</project>
