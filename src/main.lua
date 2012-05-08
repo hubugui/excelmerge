@@ -1,9 +1,13 @@
+local frame;
+local menu;
+local tree;
+
 function set_look_feel()
 	uiManager = luajava.bindClass("javax.swing.UIManager")
 	uiManager:setLookAndFeel(uiManager:getSystemLookAndFeelClassName())
 end
 
-function build_frame()
+function build_frame(title)
 	pane = luajava.newInstance("javax.swing.JPanel")
 	borderFactory = luajava.bindClass("javax.swing.BorderFactory")
 	border = borderFactory:createEmptyBorder(30, 30, 10, 30)
@@ -18,7 +22,7 @@ function build_frame()
 	pane:add(label)
 	pane:setBounds(20, 30, 10, 30)
 
-	frame = luajava.newInstance("javax.swing.JFrame", "ReportMerge")
+	frame = luajava.newInstance("javax.swing.JFrame", title)
 
 	borderLayout = luajava.bindClass("java.awt.BorderLayout")
 	frame:getContentPane():add(pane, borderLayout.CENTER)
@@ -28,7 +32,6 @@ function build_frame()
 
 	frame:setSize(800, 600)
 	frame:setLocationRelativeTo(nil)
-	frame:pack()
 	frame:setVisible(true)
 
 	local listener = luajava.createProxy("java.awt.event.MouseListener",
@@ -42,6 +45,23 @@ function build_frame()
 end
 
 function build_menu()
+	menubar = luajava.newInstance("java.awt.MenuBar")
+
+	menu_item_new = luajava.newInstance("java.awt.MenuItem", "打开")
+	menu_file = luajava.newInstance("java.awt.Menu","文件")
+	menu_file:add(menu_item_new)
+	menu_file:addSeparator()
+	menubar:add(menu_file)
+
+	menu_item_manual = luajava.newInstance("java.awt.MenuItem", "手册")
+	menu_item_about = luajava.newInstance("java.awt.MenuItem", "关于")
+	menu_help = luajava.newInstance("java.awt.Menu", "帮助")
+	menu_help:add(menu_item_manual)
+	menu_help:add(menu_item_about)
+
+
+	menubar:add(menu_help)
+	frame:setMenuBar(menubar)
 end
 
 function build_toolbar()
@@ -52,7 +72,7 @@ end
 
 function main()
 	set_look_feel()
-	build_frame()
+	build_frame('excel merge')
 	build_menu()
 	build_toolbar()
 	build_panel()
