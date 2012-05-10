@@ -17,7 +17,7 @@ function build_frame(title)
 	pane:setLayout(layout)
 
 	label = luajava.newInstance("javax.swing.JLabel", "This is a Label");
-	label:setText(luajava.newInstance("java.lang.String", "ä¸­"))
+	label:setText(luajava.newInstance("java.lang.String", "ÖÐ"))
 
 	pane:add(label)
 	pane:setBounds(20, 30, 10, 30)
@@ -47,15 +47,15 @@ end
 function build_menu()
 	menubar = luajava.newInstance("java.awt.MenuBar")
 
-	menu_item_new = luajava.newInstance("java.awt.MenuItem", "æ‰“å¼€")
-	menu_file = luajava.newInstance("java.awt.Menu","æ–‡ä»¶")
+	menu_item_new = luajava.newInstance("java.awt.MenuItem", "´ò¿ª")
+	menu_file = luajava.newInstance("java.awt.Menu","ÎÄ¼þ")
 	menu_file:add(menu_item_new)
 	menu_file:addSeparator()
 	menubar:add(menu_file)
 
-	menu_item_manual = luajava.newInstance("java.awt.MenuItem", "æ‰‹å†Œ")
-	menu_item_about = luajava.newInstance("java.awt.MenuItem", "å…³äºŽ")
-	menu_help = luajava.newInstance("java.awt.Menu", "å¸®åŠ©")
+	menu_item_manual = luajava.newInstance("java.awt.MenuItem", "ÊÖ²á")
+	menu_item_about = luajava.newInstance("java.awt.MenuItem", "¹ØÓÚ")
+	menu_help = luajava.newInstance("java.awt.Menu", "°ïÖú")
 	menu_help:add(menu_item_manual)
 	menu_help:add(menu_item_about)
 
@@ -65,6 +65,15 @@ function build_menu()
 end
 
 function build_toolbar()
+	toolbar = luajava.newInstance("javax.swing.JToolBar")
+	boolean = luajava.bindClass("java.lang.Boolean")
+
+	button = luajava.newInstance("javax.swing.JButton")
+    button:setActionCommand("´ò¿ª")
+    toolbar:add(button)
+	toolbar:addSeparator()
+
+	frame:add(toolbar, luajava.newInstance("java.awt.BorderLayout"):PAGE_START)
 end
 
 function build_panel()
