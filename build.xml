@@ -2,13 +2,31 @@
 <project default="all">
 	<property name="version" value="ver0.1"/>
 	<property name="basedir" value="."/>
+	<property name="project.name" value="excelmerge"/>
 	<property name="bin.dir" value="${basedir}/bin"/>
- 
+	<property name="src.dir" value="${basedir}/src" /> 
+	<property name="classes.dir" value="${basedir}/classes" /> 
+	<property name="jar.file" value="${basedir}/${project.name}.jar" />
+
 	<target name="clean">
 		<delete dir="${bin.dir}"/>
+		<delete dir="${classes.dir}" />
+		<delete file="${jar.file}" />
 	</target>
 
-	<target name="compile" depends="">
+	<target name="init">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${classes.dir}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" >
+		</javac>
+		<jar basedir="${classes.dir}" destfile="${jar.file}">
+			<manifest>
+				<attribute name="Main-Class" value="com.mermaid.excelmerge.ui.Main" />
+			</manifest>
+		</jar>
    	</target>
 
 	<target name="all" depends="clean, compile"/>
