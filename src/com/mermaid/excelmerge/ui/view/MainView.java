@@ -138,13 +138,13 @@ public class MainView {
 		excelTabbedPane = new JTabbedPane();
 
 		ExcelPanel excelPanel1 = new ExcelPanel();
-		excelTabbedPane.add("HAHA", excelPanel1);
+		excelTabbedPane.add("利润表", excelPanel1);
 
 		ExcelPanel excelPanel2 = new ExcelPanel();
-		excelTabbedPane.add("HEHE", excelPanel2);
+		excelTabbedPane.add("现金流量表", excelPanel2);
 
 		ExcelPanel excelPanel3 = new ExcelPanel();
-		excelTabbedPane.add("DODO", excelPanel3);
+		excelTabbedPane.add("负债表", excelPanel3);
 
 		splitPane.add(excelTabbedPane, JSplitPane.RIGHT);
 	}
