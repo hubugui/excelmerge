@@ -79,7 +79,9 @@ public class CorpTree extends JTree {
 	/**
 	 * add a region to the currently selected tree node (if any)
 	 */
-	public void addRegion() {
+	public boolean addRegion() {
+		boolean rc = false;
+
 		TreePath selectedPath = this.getSelectionPath();
 		if (selectedPath != null) {
 			Object o = selectedPath.getLastPathComponent();
@@ -95,14 +97,20 @@ public class CorpTree extends JTree {
 				TreePath newPath = selectedPath.pathByAddingChild(newChild);
 				this.setSelectionPath(newPath);
 				this.startEditingAtPath(newPath);
+				
+				rc = true;
 			}
 		}
+
+		return rc;
 	}
 
 	/**
 	 * remove the currently selected tree node (if any)
 	 */
-	public void removeRegion() {
+	public boolean removeRegion() {
+		boolean rc = false;
+
 		TreePath selectedPath = this.getSelectionPath();
 		if (selectedPath != null) {
 			if (selectedPath.getParentPath() != null) {
@@ -110,8 +118,12 @@ public class CorpTree extends JTree {
 				if (o != null) {				
 					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getSelectionPath().getLastPathComponent();
 					((DefaultTreeModel) this.getModel()).removeNodeFromParent(selectedNode);
+					
+					rc = true;
 				}
 			}
 		}
+
+		return rc;
 	}	
 }

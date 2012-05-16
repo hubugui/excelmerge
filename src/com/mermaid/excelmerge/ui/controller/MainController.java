@@ -11,9 +11,12 @@ import com.mermaid.excelmerge.ui.view.MainView;
 public class MainController implements java.awt.event.ActionListener,
 										java.awt.event.KeyListener {
 	private MainView mainView;
+	private TreeDataSource treeDataSource;
 
 	public MainController(MainView mainView) {
 		this.mainView = mainView;
+		this.treeDataSource = new TreeDataSource(mainView.corpTree);
+		this.treeDataSource.load();
 
 		mainView.saveJMI.addActionListener(this);
 		mainView.exitJMI.addActionListener(this);
@@ -32,9 +35,11 @@ public class MainController implements java.awt.event.ActionListener,
 
 		if (source instanceof JButton) {
 			if (source.equals(mainView.addCorpJB)) {
-				mainView.corpTree.addRegion();
+				if (mainView.corpTree.addRegion())
+					treeDataSource.save();
 			} else if (source.equals(mainView.removeCorpJB)) {
-				mainView.corpTree.removeRegion();
+				if (mainView.corpTree.removeRegion())
+					treeDataSource.save();
 			} else if (source.equals(mainView.importExcelJB)) {
 				
 			} else if (source.equals(mainView.printJB)) {
