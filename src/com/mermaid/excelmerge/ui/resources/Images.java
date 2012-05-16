@@ -43,7 +43,7 @@ public class Images {
 	 * Get an icon image
 	 */
 	public static ImageIcon getImageIcon(String file) {
-		ImageIcon image = imageIconMap.get(get(file));		
+		ImageIcon image = imageIconMap.get(get(file));
 		if (image == null) {
 			try {
 				image = new ImageIcon(get(file));

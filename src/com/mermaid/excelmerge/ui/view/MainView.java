@@ -27,9 +27,15 @@ public class MainView {
 	public CorpTree corpTree;
 	private JTabbedPane excelTabbedPane;  
 
+	public JMenuItem saveJMI;
+	public JMenuItem exitJMI;
+	public JMenuItem guideJMI;
+	public JMenuItem aboutJMI;
+	
 	public JButton addCorpJB;
 	public JButton removeCorpJB;
-	public JButton printJB;
+	public JButton importExcelJB;
+	public JButton printJB;	
 	
 	public MainView() {
 		initializeLookAndFeel();
@@ -71,26 +77,39 @@ public class MainView {
 	private void initializeMenu() {
 		menuBar = new JMenuBar();
 
-		JMenu fileMenu = new JMenu("File");
+		// file menu
+		JMenu fileMenu = new JMenu("文件(F)");
+		fileMenu.setMnemonic('f');
 
-		JMenuItem addMI = new JMenuItem("Add");
-		addMI.setIcon(Images.getImageIcon("open.gif"));
-		addMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.ActionEvent.CTRL_MASK));
-		fileMenu.add(addMI);
-
-		JMenuItem removeMI = new JMenuItem("Remove");
-		removeMI.setIcon(Images.getImageIcon("open.gif"));
-		removeMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.ActionEvent.CTRL_MASK));
-		fileMenu.add(removeMI);
+		saveJMI = new JMenuItem("保存");
+		saveJMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.ActionEvent.CTRL_MASK));
+		fileMenu.add(saveJMI);
 
 		fileMenu.addSeparator();
 
-		JMenuItem closeMI = new JMenuItem("Exit");
-		closeMI.setIcon(Images.getImageIcon("open.gif"));
-		closeMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.ActionEvent.CTRL_MASK));
-		fileMenu.add(closeMI);
+		exitJMI = new JMenuItem("退出");
+		// exitJMI.setIcon(Images.getImageIcon("open.gif"));
+		exitJMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.ActionEvent.CTRL_MASK));
+		fileMenu.add(exitJMI);
 
 		menuBar.add(fileMenu);
+
+		// help menu
+		JMenu helpMenu = new JMenu("帮助(H)");
+		helpMenu.setMnemonic('h');
+
+		guideJMI = new JMenuItem("指南");
+		guideJMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.ActionEvent.CTRL_MASK));
+		helpMenu.add(guideJMI);
+
+		helpMenu.addSeparator();
+		
+		aboutJMI = new JMenuItem("关于");
+		aboutJMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.ActionEvent.CTRL_MASK));
+		helpMenu.add(aboutJMI);
+
+		menuBar.add(helpMenu);
+
 		mainFrame.setJMenuBar(menuBar);
 	}
 
@@ -99,21 +118,29 @@ public class MainView {
 
 		Insets margins = new Insets(0, 0, 0, 0);
 
-		addCorpJB = new JButton("���");
+		addCorpJB = new JButton("增加");
 		addCorpJB.setMargin(margins);
-		addCorpJB.setToolTipText("��ӹ�˾(Alt + A");
+		addCorpJB.setToolTipText("增加公司(Alt + A");
 		addCorpJB.setMnemonic('a');
 		toolBar.add(addCorpJB);
 
-		removeCorpJB = new JButton("ɾ��");		
+		removeCorpJB = new JButton("删除");		
 		removeCorpJB.setMargin(margins);
-		removeCorpJB.setToolTipText("ɾ��˾(Alt + R");
+		removeCorpJB.setToolTipText("删除公司(Alt + R");
 		removeCorpJB.setMnemonic('r');
 		toolBar.add(removeCorpJB);
 
 		toolBar.addSeparator();
 
-		printJB = new JButton(Images.getImageIcon("measure.gif"));
+		importExcelJB = new JButton("导入");		
+		importExcelJB.setMargin(margins);
+		importExcelJB.setToolTipText("导入Excel(Alt + I");
+		importExcelJB.setMnemonic('I');
+		toolBar.add(importExcelJB);
+
+		toolBar.addSeparator();
+
+		printJB = new JButton(Images.getImageIcon("print.gif"));
 		printJB.setMargin(margins);
 		printJB.setToolTipText("Measure Marker(Alt + P");
 		printJB.setMnemonic('p');
@@ -134,28 +161,27 @@ public class MainView {
 
 	private void initializeLeftPanel() {
 		corpTree = new CorpTree();
-
-        splitPane.add(corpTree, JSplitPane.LEFT);
+		splitPane.add(corpTree, JSplitPane.LEFT);
 	}
 
 	private void initializeRightPanel() {
 		excelTabbedPane = new JTabbedPane();
 
 		ExcelPanel excelPanel1 = new ExcelPanel();
-		excelTabbedPane.add("�����", excelPanel1);
+		excelTabbedPane.add("资金表", excelPanel1);
 
 		ExcelPanel excelPanel2 = new ExcelPanel();
-		excelTabbedPane.add("�ֽ�����", excelPanel2);
+		excelTabbedPane.add("现金流量表", excelPanel2);
 
 		ExcelPanel excelPanel3 = new ExcelPanel();
-		excelTabbedPane.add("��ծ��", excelPanel3);
+		excelTabbedPane.add("负债表", excelPanel3);
 
 		splitPane.add(excelTabbedPane, JSplitPane.RIGHT);
 	}
 
 	private void initializeStatusPanel() {
 		statusBar = new JToolBar();
-		JLabel statusJL = new JLabel("This is status bar");
+		JLabel statusJL = new JLabel("status bar");
 		statusBar.add(statusJL);
 
 		mainFrame.getContentPane().add(statusBar, BorderLayout.SOUTH);

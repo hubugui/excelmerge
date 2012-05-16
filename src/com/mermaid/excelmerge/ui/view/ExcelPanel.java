@@ -29,7 +29,7 @@ public class ExcelPanel extends javax.swing.JPanel {
 		ownerJCB = new JCheckBox("Owner");
 		toolbarJP.add(ownerJCB);
 
-		String headers[] = {"课程名称","课程代号","学费"};
+		String headers[] = {"濮撳悕","骞撮緞","绉戠洰"};
 		Object[][] cells = new Object[8][256];
 
 		table = new JTable(cells, headers);

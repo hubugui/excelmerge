@@ -13,9 +13,11 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
@@ -98,7 +100,8 @@ public class NodeMoveTransferHandler extends TransferHandler {
 			TreePath[] movedPaths = (TreePath[]) data.getTransferData(DataFlavor.stringFlavor);
 			for(int i = 0; i < movedPaths.length; i++) {
 				MutableTreeNode moveNode = (MutableTreeNode) movedPaths[i].getLastPathComponent();
-				if(!moveNode.equals(targetNode)) {
+
+				if (isAncestor(moveNode, targetNode) == false) {
 					model.removeNodeFromParent(moveNode);
 					model.insertNodeInto(moveNode, targetNode, targetNode.getChildCount());
 				}
@@ -125,7 +128,7 @@ public class NodeMoveTransferHandler extends TransferHandler {
 			TreePath[] movedPaths = (TreePath[]) data.getTransferData(DataFlavor.stringFlavor);
 			for(int i = 0; i < movedPaths.length; i++) {
 				MutableTreeNode moveNode = (MutableTreeNode) movedPaths[i].getLastPathComponent();
-				if(!moveNode.equals(targetNode)) {
+				if (isAncestor(moveNode, targetNode) == false) {
 					model.removeNodeFromParent(moveNode);
 					model.insertNodeInto(moveNode, parent, model.getIndexOfChild(parent, targetNode));
 				}
@@ -176,9 +179,21 @@ public class NodeMoveTransferHandler extends TransferHandler {
     return image;
   }
   
-  /** remember the path to the currently dragged node here (got from createTransferable) */
-  private MutableTreeNode draggedNode;
-  /** remember the currently dragged node here (got from createTransferable) */
-  private TreePath dragPath;
+	public boolean isAncestor(TreeNode ancestor, TreeNode child) {
+		boolean rc = false;
 
+		TreeNode tn = child;
+		while (tn != null) {
+			if (tn.equals(ancestor))
+				return true;
+			tn = tn.getParent();
+		}
+
+		return rc;
+	}
+
+	/** remember the path to the currently dragged node here (got from createTransferable) */
+	private MutableTreeNode draggedNode;
+	/** remember the currently dragged node here (got from createTransferable) */
+	private TreePath dragPath;
 }

@@ -53,7 +53,7 @@ public class CorpTree extends JTree {
 	 */
 	private TreeNode getSampleTreeRoot() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Region(id++, "根"));
-		addNodes(root, new String[] {default_node_name + " " + id++});
+		addNodes(root, new String[] {default_node_name + " " + id});
 		return root;
 	}
 
@@ -66,8 +66,13 @@ public class CorpTree extends JTree {
 	 *            the child names to add nodes for
 	 */
 	private void addNodes(TreeNode parent, String[] children) {
-		for (int i = 0; i < children.length; i++) {
-			((DefaultMutableTreeNode) parent).add(new DefaultMutableTreeNode(new Region(id++, children[i])));
+		for (int i = 0; i < children.length; i++) {			
+			Region parentRegion = (Region) ((DefaultMutableTreeNode) parent).getUserObject();
+
+			Region region = new Region(id++, children[i]);
+			region.setParentId(parentRegion.getId());
+
+			((DefaultMutableTreeNode) parent).add(new DefaultMutableTreeNode(region));
 		}
 	}
 
@@ -81,6 +86,10 @@ public class CorpTree extends JTree {
 			if (o != null) {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getSelectionPath().getLastPathComponent();
 				Region newItem = new Region(id, default_node_name + " " + id++);
+
+				Region parentRegion = (Region) selectedNode.getUserObject();
+				newItem.setParentId(parentRegion.getId());
+
 				DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(newItem);
 				((DefaultTreeModel) this.getModel()).insertNodeInto(newChild, selectedNode, selectedNode.getChildCount());
 				TreePath newPath = selectedPath.pathByAddingChild(newChild);
@@ -104,5 +113,5 @@ public class CorpTree extends JTree {
 				}
 			}
 		}
-	}
+	}	
 }

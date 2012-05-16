@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 
 import com.mermaid.excelmerge.ui.view.MainView;
 
@@ -13,24 +14,42 @@ public class MainController implements java.awt.event.ActionListener,
 
 	public MainController(MainView mainView) {
 		this.mainView = mainView;
-		
+
+		mainView.saveJMI.addActionListener(this);
+		mainView.exitJMI.addActionListener(this);
+		mainView.guideJMI.addActionListener(this);
+		mainView.aboutJMI.addActionListener(this);
+
 		mainView.addCorpJB.addActionListener(this);
 		mainView.removeCorpJB.addActionListener(this);
+		mainView.importExcelJB.addActionListener(this);
 		mainView.printJB.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
-		
+
 		if (source instanceof JButton) {
 			if (source.equals(mainView.addCorpJB)) {
 				mainView.corpTree.addRegion();
 			} else if (source.equals(mainView.removeCorpJB)) {
 				mainView.corpTree.removeRegion();
+			} else if (source.equals(mainView.importExcelJB)) {
+				
 			} else if (source.equals(mainView.printJB)) {
 				
-			}				
+			}
+		} else if (source instanceof JMenuItem) {
+			if (source.equals(mainView.saveJMI)) {
+				
+			} else if (source.equals(mainView.exitJMI)) {
+				System.exit(0);
+			} else if (source.equals(mainView.guideJMI)) {
+				
+			} else if (source.equals(mainView.aboutJMI)) {
+				
+			}
 		}
 	}
 

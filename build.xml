@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project default="all">
 	<property name="version" value="ver0.1"/>
 	<property name="basedir" value="."/>
@@ -20,7 +20,7 @@
 	</target>
 
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" encoding="utf-8" includeantruntime="false" debug="true">
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 
