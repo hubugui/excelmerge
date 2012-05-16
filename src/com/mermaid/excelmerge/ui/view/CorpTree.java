@@ -16,7 +16,7 @@ import com.lightdev.app.samples.regedit.UserTreeCellEditor;
 
 public class CorpTree extends JTree {
 	private int id;
-	private final static String default_node_name = "ĞÂ¹«Ë¾";
+	private final static String default_node_name = "æ–°å…¬å¸";
 
 	public CorpTree() {
 		super();
@@ -52,7 +52,7 @@ public class CorpTree extends JTree {
 	 * @return the root node to add to our tree
 	 */
 	private TreeNode getSampleTreeRoot() {
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Region(id++, "¸ù"));
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Region(id++, "æ ¹"));
 		addNodes(root, new String[] {default_node_name + " " + id++});
 		return root;
 	}

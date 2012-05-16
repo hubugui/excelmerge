@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.util.Enumeration;
 
-import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,11 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.UIManager;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import com.mermaid.excelmerge.ui.resources.Images;
 
@@ -105,15 +99,15 @@ public class MainView {
 
 		Insets margins = new Insets(0, 0, 0, 0);
 
-		addCorpJB = new JButton("Ôö¼Ó");
+		addCorpJB = new JButton("ï¿½ï¿½ï¿½");
 		addCorpJB.setMargin(margins);
-		addCorpJB.setToolTipText("Ôö¼Ó¹«Ë¾(Alt + A");
+		addCorpJB.setToolTipText("ï¿½ï¿½Ó¹ï¿½Ë¾(Alt + A");
 		addCorpJB.setMnemonic('a');
 		toolBar.add(addCorpJB);
 
-		removeCorpJB = new JButton("É¾³ý");		
+		removeCorpJB = new JButton("É¾ï¿½ï¿½");		
 		removeCorpJB.setMargin(margins);
-		removeCorpJB.setToolTipText("É¾³ý¹«Ë¾(Alt + R");
+		removeCorpJB.setToolTipText("É¾ï¿½ï¿½Ë¾(Alt + R");
 		removeCorpJB.setMnemonic('r');
 		toolBar.add(removeCorpJB);
 
@@ -148,13 +142,13 @@ public class MainView {
 		excelTabbedPane = new JTabbedPane();
 
 		ExcelPanel excelPanel1 = new ExcelPanel();
-		excelTabbedPane.add("ÀûÈó±í", excelPanel1);
+		excelTabbedPane.add("ï¿½ï¿½ï¿½ï¿½ï¿½", excelPanel1);
 
 		ExcelPanel excelPanel2 = new ExcelPanel();
-		excelTabbedPane.add("ÏÖ½ðÁ÷Á¿±í", excelPanel2);
+		excelTabbedPane.add("ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½", excelPanel2);
 
 		ExcelPanel excelPanel3 = new ExcelPanel();
-		excelTabbedPane.add("¸ºÕ®±í", excelPanel3);
+		excelTabbedPane.add("ï¿½ï¿½Õ®ï¿½ï¿½", excelPanel3);
 
 		splitPane.add(excelTabbedPane, JSplitPane.RIGHT);
 	}
