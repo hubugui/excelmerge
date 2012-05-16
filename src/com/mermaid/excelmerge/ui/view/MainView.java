@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.Enumeration;
 
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,6 +18,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import com.mermaid.excelmerge.ui.resources.Images;
 
@@ -25,9 +30,13 @@ public class MainView {
 	private JToolBar toolBar;
 	private JSplitPane splitPane;
 	private JToolBar statusBar;
-	private JTree corpTree;
+	public CorpTree corpTree;
 	private JTabbedPane excelTabbedPane;  
 
+	public JButton addCorpJB;
+	public JButton removeCorpJB;
+	public JButton printJB;
+	
 	public MainView() {
 		initializeLookAndFeel();
 		initializeFrame();
@@ -96,21 +105,21 @@ public class MainView {
 
 		Insets margins = new Insets(0, 0, 0, 0);
 
-		JButton addJB = new JButton(Images.getImageIcon("open.gif"));
-		addJB.setMargin(margins);
-		addJB.setToolTipText("Measure Marker(Alt + A");
-		addJB.setMnemonic('a');
-		toolBar.add(addJB);
+		addCorpJB = new JButton("增加");
+		addCorpJB.setMargin(margins);
+		addCorpJB.setToolTipText("增加公司(Alt + A");
+		addCorpJB.setMnemonic('a');
+		toolBar.add(addCorpJB);
 
-		JButton removeJB = new JButton(Images.getImageIcon("measure.gif"));		
-		removeJB.setMargin(margins);
-		removeJB.setToolTipText("Measure Marker(Alt + R");
-		removeJB.setMnemonic('r');
-		toolBar.add(removeJB);
+		removeCorpJB = new JButton("删除");		
+		removeCorpJB.setMargin(margins);
+		removeCorpJB.setToolTipText("删除公司(Alt + R");
+		removeCorpJB.setMnemonic('r');
+		toolBar.add(removeCorpJB);
 
 		toolBar.addSeparator();
 
-		JButton printJB = new JButton(Images.getImageIcon("measure.gif"));
+		printJB = new JButton(Images.getImageIcon("measure.gif"));
 		printJB.setMargin(margins);
 		printJB.setToolTipText("Measure Marker(Alt + P");
 		printJB.setMnemonic('p');
@@ -130,8 +139,9 @@ public class MainView {
 	}
 
 	private void initializeLeftPanel() {
-		corpTree = new JTree();
-		splitPane.add(corpTree, JSplitPane.LEFT);
+		corpTree = new CorpTree();
+
+        splitPane.add(corpTree, JSplitPane.LEFT);
 	}
 
 	private void initializeRightPanel() {
