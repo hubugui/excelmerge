@@ -54,5 +54,4 @@ public class Images {
 		}
 		return image;
 	}
-
 }
