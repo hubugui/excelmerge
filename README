@@ -1,14 +1,19 @@
 ================
  excel merge
 ================
-
 merge excel cell, the main feature are sum cell number value.
+
+================
+ Construct Step
+================
+1.	open terminator
+2.	type "ant"
+3.	type "java -jar excelmerge.jar"
 
 ================
  Third software
 ================
-
-1. java
-   http://www.java.com
-2. luaj
-   http://sourceforge.net/projects/luaj/
+1.	java
+	http://www.java.com
+2.	ant
+	http://ant.apache.org/
