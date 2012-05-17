@@ -47,7 +47,7 @@ public class MainController implements java.awt.event.ActionListener,
 			}
 		} else if (source instanceof JMenuItem) {
 			if (source.equals(mainView.saveJMI)) {
-				
+				treeDataSource.save();
 			} else if (source.equals(mainView.exitJMI)) {
 				System.exit(0);
 			} else if (source.equals(mainView.guideJMI)) {

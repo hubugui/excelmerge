@@ -142,6 +142,14 @@ public class Region implements HierarchicalItem {
     return (superId == -1);
   }
   
+  public void setDepth(int depth) {
+	  this.depth = depth;
+  }
+
+  public int getDepth() {
+	  return this.depth;
+  }
+  
   /* ----------------------- HierarchicalItem implementation end ------------------ */
   
   /* ----------------------- class fields ------------------ */
@@ -152,5 +160,6 @@ public class Region implements HierarchicalItem {
   private String regionName;
   /** superior region id */
   private int superId = -1;
-
+  /* tree depth, root depth is 0 */
+  private int depth = 0;
 }
