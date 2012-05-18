@@ -9,7 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.mermaid.excelmerge.ui.model.Corp;
-import com.mermaid.excelmerge.ui.view.CorpImportFrame;
+import com.mermaid.excelmerge.ui.view.CorpImportDialog;
 import com.mermaid.excelmerge.ui.view.MainView;
 
 public class MainController implements java.awt.event.ActionListener,
@@ -48,8 +48,8 @@ public class MainController implements java.awt.event.ActionListener,
 					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
 					Corp corp = (Corp) selectedNode.getUserObject();
 
-					CorpImportFrame corpImportFrame = new CorpImportFrame(corp);
-					corpImportFrame.setVisible(true);
+					CorpImportDialog corpImportDialog = new CorpImportDialog(corp);
+					corpImportDialog.setVisible(true);
 				}
 			} else if (source.equals(mainView.printJB)) {
 				

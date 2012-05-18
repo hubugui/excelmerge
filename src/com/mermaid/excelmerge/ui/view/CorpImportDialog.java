@@ -17,13 +17,13 @@ import javax.swing.border.EmptyBorder;
 
 import com.mermaid.excelmerge.ui.model.Corp;
 
-public class CorpImportFrame extends JDialog {
+public class CorpImportDialog extends JDialog {
 	private Corp corp;
 	private JPanel contentPane;
 
 	private String[] excelType = {"利润表", "现金流量表", "负债表"};
 
-	public CorpImportFrame(Corp corp) {
+	public CorpImportDialog(Corp corp) {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new GridBagLayout());
