@@ -5,7 +5,11 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
+import com.mermaid.excelmerge.ui.model.Corp;
+import com.mermaid.excelmerge.ui.view.CorpImportFrame;
 import com.mermaid.excelmerge.ui.view.MainView;
 
 public class MainController implements java.awt.event.ActionListener,
@@ -35,19 +39,29 @@ public class MainController implements java.awt.event.ActionListener,
 
 		if (source instanceof JButton) {
 			if (source.equals(mainView.addCorpJB)) {
-				if (mainView.corpTree.addRegion())
-					treeDataSource.save();
+				mainView.corpTree.addRegion();
 			} else if (source.equals(mainView.removeCorpJB)) {
-				if (mainView.corpTree.removeRegion())
-					treeDataSource.save();
+				mainView.corpTree.removeRegion();
 			} else if (source.equals(mainView.importExcelJB)) {
-				
+				TreePath selectedPath = mainView.corpTree.getSelectionPath();
+				if (selectedPath != null && selectedPath.getLastPathComponent() != null) {
+					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+					Corp corp = (Corp) selectedNode.getUserObject();
+
+					CorpImportFrame corpImportFrame = new CorpImportFrame(corp);
+					corpImportFrame.setVisible(true);
+				}
 			} else if (source.equals(mainView.printJB)) {
 				
 			}
 		} else if (source instanceof JMenuItem) {
 			if (source.equals(mainView.saveJMI)) {
-				treeDataSource.save();
+				mainView.statusJL.setText("正在保存......");
+
+				if (treeDataSource.save())
+					mainView.statusJL.setText("保存成功！");
+				else
+					mainView.statusJL.setText("保存失败！");
 			} else if (source.equals(mainView.exitJMI)) {
 				System.exit(0);
 			} else if (source.equals(mainView.guideJMI)) {

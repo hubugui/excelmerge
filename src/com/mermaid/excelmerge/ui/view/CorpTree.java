@@ -13,6 +13,7 @@ import com.lightdev.app.samples.regedit.NodeMoveTransferHandler;
 import com.lightdev.app.samples.regedit.Region;
 import com.lightdev.app.samples.regedit.TreeDropTarget;
 import com.lightdev.app.samples.regedit.UserTreeCellEditor;
+import com.mermaid.excelmerge.ui.model.Corp;
 
 public class CorpTree extends JTree {
 	private int id;
@@ -44,6 +45,11 @@ public class CorpTree extends JTree {
 			int row = tree.getRowForPath(new TreePath(node.getPath()));
 			tree.expandRow(row);
 		}
+
+		if (this.getRowCount() == 1)
+			this.setSelectionRow(0);
+		else
+			this.setSelectionRow(1);
 	}
 
 	/**
@@ -52,7 +58,7 @@ public class CorpTree extends JTree {
 	 * @return the root node to add to our tree
 	 */
 	private TreeNode getSampleTreeRoot() {
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Region(id++, "根"));
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Corp(id++, "根"));
 		addNodes(root, new String[] {default_node_name + " " + id});
 		return root;
 	}
@@ -69,7 +75,7 @@ public class CorpTree extends JTree {
 		for (int i = 0; i < children.length; i++) {			
 			Region parentRegion = (Region) ((DefaultMutableTreeNode) parent).getUserObject();
 
-			Region region = new Region(id++, children[i]);
+			Region region = new Corp(id++, children[i]);
 			region.setParentId(parentRegion.getId());
 
 			((DefaultMutableTreeNode) parent).add(new DefaultMutableTreeNode(region));
@@ -87,7 +93,7 @@ public class CorpTree extends JTree {
 			Object o = selectedPath.getLastPathComponent();
 			if (o != null) {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getSelectionPath().getLastPathComponent();
-				Region newItem = new Region(id, default_node_name + " " + id++);
+				Region newItem = new Corp(id, default_node_name + " " + id++);
 
 				Region parentRegion = (Region) selectedNode.getUserObject();
 				newItem.setParentId(parentRegion.getId());

@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 import com.mermaid.excelmerge.ui.resources.Images;
 
 public class MainView {
-	private JFrame mainFrame;
+	public JFrame mainFrame;
 	private JMenuBar menuBar;
 	private JToolBar toolBar;
 	private JSplitPane splitPane;
@@ -31,12 +31,15 @@ public class MainView {
 	public JMenuItem exitJMI;
 	public JMenuItem guideJMI;
 	public JMenuItem aboutJMI;
-	
+
 	public JButton addCorpJB;
 	public JButton removeCorpJB;
 	public JButton importExcelJB;
+	public JButton exportExcelJB;
 	public JButton printJB;	
-	
+
+	public JLabel statusJL;
+
 	public MainView() {
 		initializeLookAndFeel();
 		initializeFrame();
@@ -135,9 +138,15 @@ public class MainView {
 		importExcelJB = new JButton("导入");		
 		importExcelJB.setMargin(margins);
 		importExcelJB.setToolTipText("导入Excel(Alt + I");
-		importExcelJB.setMnemonic('I');
+		importExcelJB.setMnemonic('i');
 		toolBar.add(importExcelJB);
 
+		exportExcelJB = new JButton("导出");		
+		exportExcelJB.setMargin(margins);
+		exportExcelJB.setToolTipText("导出Excel(Alt + E");
+		exportExcelJB.setMnemonic('e');
+		toolBar.add(exportExcelJB);
+		
 		toolBar.addSeparator();
 
 		printJB = new JButton(Images.getImageIcon("print.gif"));
@@ -181,7 +190,7 @@ public class MainView {
 
 	private void initializeStatusPanel() {
 		statusBar = new JToolBar();
-		JLabel statusJL = new JLabel("status bar");
+		statusJL = new JLabel("status bar");
 		statusBar.add(statusJL);
 
 		mainFrame.getContentPane().add(statusBar, BorderLayout.SOUTH);

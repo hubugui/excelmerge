@@ -6,7 +6,7 @@ import javax.swing.tree.TreeNode;
 import com.mermaid.excelmerge.ui.view.CorpTree;
 
 public class TreeDataSource {
-	private final static String storage_path = "db.xml";
+	private final static String storage_path = "db/excelmerge.xml";
 	private CorpTree corpTree;
 
 	public TreeDataSource(CorpTree corpTree) {

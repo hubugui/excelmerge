@@ -44,7 +44,7 @@ public class TreeWriter {
 			region.setDepth(depth);
 			
 			Element parentE = (Element) userData;
-			Element nodeE = document.createElement("node");
+			Element nodeE = document.createElement("corp");
 			parentE.appendChild(nodeE);
 			
 			nodeE.setAttribute("name", region.getName());
