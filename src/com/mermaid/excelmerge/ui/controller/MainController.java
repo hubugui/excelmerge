@@ -48,7 +48,7 @@ public class MainController implements java.awt.event.ActionListener,
 					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
 					Corp corp = (Corp) selectedNode.getUserObject();
 
-					CorpImportDialog corpImportDialog = new CorpImportDialog(corp);
+					CorpImportDialog corpImportDialog = new CorpImportDialog(corp, treeDataSource);
 					corpImportDialog.setVisible(true);
 				}
 			} else if (source.equals(mainView.printJB)) {
