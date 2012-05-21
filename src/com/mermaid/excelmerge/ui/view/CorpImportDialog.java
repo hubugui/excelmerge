@@ -12,13 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
-import com.mermaid.excelmerge.ui.controller.TreeDataSource;
+import com.mermaid.excelmerge.ui.model.TreeDataSource;
 import com.mermaid.excelmerge.ui.model.Corp;
 
 public class CorpImportDialog extends JDialog implements java.awt.event.ActionListener {

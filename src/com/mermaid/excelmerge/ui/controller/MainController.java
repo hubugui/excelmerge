@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.mermaid.excelmerge.ui.model.Corp;
+import com.mermaid.excelmerge.ui.model.TreeDataSource;
 import com.mermaid.excelmerge.ui.view.CorpImportDialog;
 import com.mermaid.excelmerge.ui.view.MainView;
 
