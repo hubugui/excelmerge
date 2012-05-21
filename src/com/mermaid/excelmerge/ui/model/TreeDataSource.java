@@ -26,8 +26,8 @@ public class TreeDataSource {
 		if (corpTree != null) {
 			TreeModel tm = corpTree.getModel();
 			try {
-				TreeWriter tw = new TreeWriter("", storage_path, (TreeNode) tm.getRoot());
-				tw.save();
+				TreeWriter writer = new TreeWriter(storage_path, (TreeNode) tm.getRoot());
+				writer.save();
 			} catch(Exception ex) {
 				ex.printStackTrace();
 				rc = false;
@@ -39,7 +39,18 @@ public class TreeDataSource {
 
 	public boolean load() {
 		boolean rc = true;
-
+		
+		if (corpTree != null) {
+			TreeModel tm = corpTree.getModel();
+			try {
+				TreeReader reader = new TreeReader(storage_path, (TreeNode) tm.getRoot());
+				reader.load();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+				rc = false;
+			}
+		}		
+		
 		return rc;
 	}
 }

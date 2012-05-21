@@ -17,8 +17,8 @@ public class TreeNodeAccess {
 			}
 		}
 	}
-}
 
-interface TreeNodeAccessCB {
-	public Object access(TreeNode node, int depth, Object userData);
+	public interface TreeNodeAccessCB {
+		public Object access(TreeNode node, int depth, Object userData);
+	}
 }

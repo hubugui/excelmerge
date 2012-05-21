@@ -1,6 +1,5 @@
 package com.mermaid.excelmerge.ui.model;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -18,22 +17,18 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.lightdev.app.samples.regedit.Region;
-import com.mermaid.excelmerge.ui.model.Corp;
-import com.mermaid.excelmerge.ui.model.CorpExcel;
+import com.mermaid.excelmerge.ui.model.TreeNodeAccess.TreeNodeAccessCB;
 
 public class TreeWriter {
 	private final static String VERSION = "1.0";
 	private final static String DESCRIPTOR = "excel merge data file";
 	private final static String CORP = "Mermaid";
 
-	private String name;
 	private String path;
 	private Document document;
 	private TreeNode node;
 
-	public TreeWriter(String name, String path, TreeNode node) throws ParserConfigurationException {
-		this.name = name;
+	public TreeWriter(String path, TreeNode node) throws ParserConfigurationException {
 		this.path = path;
 		this.node = node;
 		
@@ -46,12 +41,13 @@ public class TreeWriter {
 		public Object access(TreeNode node, int depth, Object userData) {
 			Corp corp = (Corp) ((DefaultMutableTreeNode) node).getUserObject();
 			corp.setDepth(depth);
-			
+
 			Element parentE = (Element) userData;
 			Element nodeE = document.createElement("corp");
 			parentE.appendChild(nodeE);
 
 			nodeE.setAttribute("name", corp.getName());
+			nodeE.setAttribute("id", corp.getId().toString());
 
 			List<CorpExcel> excelList = corp.getExcelList();
 			for (CorpExcel cExcel:excelList) {
@@ -86,7 +82,7 @@ public class TreeWriter {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
 			DOMSource source = new DOMSource(document);
-			
+
 			transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
