@@ -12,14 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import com.mermaid.excelmerge.ui.controller.TreeDataSource;
 import com.mermaid.excelmerge.ui.model.Corp;
@@ -30,6 +27,8 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 	private JPanel contentPane;
 	public JButton confirmJB;
 	public JButton cancelJB;
+
+	private JTextField[] excelPathJTFArray;
 
 	private String[] excelType = {"利润表", "现金流量表", "负债表"};
 
@@ -45,6 +44,7 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 		centerPanel.setLayout(new GridBagLayout());		
 		GridBagConstraints gridBagConst = new GridBagConstraints();
 
+		excelPathJTFArray = new JTextField[excelType.length];
 		for (int i = 0; i < excelType.length; i++) {
 			gridBagConst.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConst.gridx = 0;
@@ -54,16 +54,16 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 			JLabel typeJL = new JLabel(excelType[i]);
 			centerPanel.add(typeJL, gridBagConst);
 
-			JTextField excelPathJTF = new JTextField();
-			excelPathJTF.setColumns(30);
+			excelPathJTFArray[i] = new JTextField();
+			excelPathJTFArray[i].setColumns(40);
+			excelPathJTFArray[i].putClientProperty("type", excelType[i]);
+
 			gridBagConst.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConst.gridx = 1;
 			gridBagConst.gridy = i;
 			gridBagConst.weightx = 1;
-			centerPanel.add(excelPathJTF, gridBagConst);
+			centerPanel.add(excelPathJTFArray[i], gridBagConst);
 
-			JButton chooseJB = new JButton("请选择");
-			
 			class ChooseActionListener implements java.awt.event.ActionListener {
 				private JTextField excelPathJTF;
 				private Component parent;
@@ -72,44 +72,38 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 					this.excelPathJTF = excelPathJTF;
 					this.parent = parent;
 				}
-				
+
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("导入文件"); 
-					fileChooser.setFileFilter(new FileFilter() { 
-						public boolean accept(File f) { 
+					fileChooser.setDialogTitle("请选择");
+					fileChooser.setFileFilter(new FileFilter() {
+						public boolean accept(File f) {
 							if (f.getName().endsWith("xls") || f.getName().endsWith("csv") || f.isDirectory()) 
 								return true; 
 							return false; 
 						}
-					 
-						public String getDescription() { 
+
+						public String getDescription() {
 							return "Excel(*.xls)";
 						}
 					});
 
-					int result = fileChooser.showOpenDialog(parent); 
-					if (result == JFileChooser.APPROVE_OPTION) { 
+					if (fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) { 
 						File fileIn = fileChooser.getSelectedFile(); 
-						if (fileIn.exists()) { 
-							JOptionPane.showMessageDialog(parent, "OPEN"); // 提示框 
-						} else {
-						}
-					} else if (result == JFileChooser.CANCEL_OPTION) { 
-						System.out.println("Cancel button is pushed."); 
-					} else if (result == JFileChooser.ERROR_OPTION) { 
-						System.err.println("Error when select file."); 
-					} 
+						if (fileIn.exists())
+							excelPathJTF.setText(fileIn.getAbsolutePath());
+					}
 				}
 			}
 
-			chooseJB.addActionListener(new ChooseActionListener(excelPathJTF, this));
+			JButton chooseJB = new JButton("请选择");
+			chooseJB.addActionListener(new ChooseActionListener(excelPathJTFArray[i], this));
 			gridBagConst.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConst.gridx = 2;
 			gridBagConst.gridy = i;
 			gridBagConst.weightx = 0.1;
 			centerPanel.add(chooseJB, gridBagConst);
-		}		
+		}
 
 		contentPane.add(centerPanel, BorderLayout.CENTER);
 
@@ -152,10 +146,22 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 
 		if (source instanceof JButton) {
 			if (source.equals(confirmJB)) {
-				this.dispose();
-			} else if (source.equals(cancelJB)) {
-				this.dispose();
+				if (excelPathJTFArray != null) {
+					for (JTextField excelPathJTF:excelPathJTFArray) {
+						String type = excelPathJTF.getClientProperty("type").toString();
+						String path = excelPathJTF.getText().trim();
+
+						if (type != null && path.length() > 0) {
+							corp.removeExcel(type);
+							corp.addExcel(type, path);
+						}
+					}
+
+					dataSource.save();
+				}
 			}
+
+			this.dispose();
 		}
 	}
 }

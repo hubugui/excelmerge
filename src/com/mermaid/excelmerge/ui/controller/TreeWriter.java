@@ -1,6 +1,8 @@
 package com.mermaid.excelmerge.ui.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -17,6 +19,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.lightdev.app.samples.regedit.Region;
+import com.mermaid.excelmerge.ui.model.Corp;
+import com.mermaid.excelmerge.ui.model.CorpExcel;
 
 public class TreeWriter {
 	private final static String VERSION = "1.0";
@@ -40,14 +44,23 @@ public class TreeWriter {
 
 	private class TreeNodeAccessCBSave implements TreeNodeAccessCB {
 		public Object access(TreeNode node, int depth, Object userData) {
-			Region region = (Region) ((DefaultMutableTreeNode) node).getUserObject();
-			region.setDepth(depth);
+			Corp corp = (Corp) ((DefaultMutableTreeNode) node).getUserObject();
+			corp.setDepth(depth);
 			
 			Element parentE = (Element) userData;
 			Element nodeE = document.createElement("corp");
 			parentE.appendChild(nodeE);
-			
-			nodeE.setAttribute("name", region.getName());
+
+			nodeE.setAttribute("name", corp.getName());
+
+			List<CorpExcel> excelList = corp.getExcelList();
+			for (CorpExcel cExcel:excelList) {
+				Element excel = document.createElement("excel");
+				nodeE.appendChild(excel);
+
+				excel.setAttribute("name", cExcel.getName());
+				excel.setAttribute("path", cExcel.getPath());
+			}
 			
 			return nodeE;
 		}
@@ -69,14 +82,14 @@ public class TreeWriter {
 
 		try {
 			write();
-			
+
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
 			DOMSource source = new DOMSource(document);
 			
 			transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			
+
 			StreamResult result = new StreamResult(new FileOutputStream(path));
 			transformer.transform(source, result);
 		} catch (Exception ex) {

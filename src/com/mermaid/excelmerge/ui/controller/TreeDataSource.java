@@ -1,16 +1,23 @@
 package com.mermaid.excelmerge.ui.controller;
 
+import java.io.File;
+
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 import com.mermaid.excelmerge.ui.view.CorpTree;
 
 public class TreeDataSource {
-	private final static String storage_path = "db/excelmerge.xml";
+	private final static String storage_path = "data/excelmerge.xml";
 	private CorpTree corpTree;
 
 	public TreeDataSource(CorpTree corpTree) {
 		this.corpTree = corpTree;
+
+		// mkdir
+		if (new File("data/").exists() == false) {
+			new File("data/").mkdir();
+		}
 	}
 
 	public boolean save() {
