@@ -49,7 +49,7 @@ public class TreeWriter {
 			nodeE.setAttribute("name", corp.getName());
 			nodeE.setAttribute("id", corp.getId().toString());
 
-			List<CorpExcel> excelList = corp.getExcelList();
+			List<CorpExcel> excelList = corp.getAll();
 			for (CorpExcel cExcel:excelList) {
 				Element excel = document.createElement("excel");
 				nodeE.appendChild(excel);

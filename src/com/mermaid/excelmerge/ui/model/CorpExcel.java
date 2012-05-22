@@ -1,6 +1,8 @@
 package com.mermaid.excelmerge.ui.model;
 
-public class CorpExcel {
+import java.util.Comparator;
+
+public class CorpExcel implements Comparator {
 	private String name;
 	private String path;
 
@@ -8,6 +10,13 @@ public class CorpExcel {
 		super();
 		this.name = name;
 		this.path = path;
+	}
+
+	public int compare(Object arg0, Object arg1) {
+		CorpExcel obj1 = (CorpExcel) arg0;
+		CorpExcel obj2 = (CorpExcel) arg1;
+
+		return obj1.getName().compareTo(obj2.getName());
 	}
 
 	public String getName() {

@@ -6,11 +6,13 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
@@ -25,7 +27,6 @@ public class MainView {
 	private JSplitPane splitPane;
 	private JToolBar statusBar;
 	public CorpTree corpTree;
-	private JTabbedPane excelTabbedPane;  
 
 	public JMenuItem saveJMI;
 	public JMenuItem exitJMI;
@@ -49,6 +50,7 @@ public class MainView {
 
 		mainFrame.setVisible(true);
 		splitPane.setDividerLocation(0.2);
+		corpTree.requestFocusInWindow();
 	}
 
 	private void initializeLookAndFeel() {
@@ -164,28 +166,12 @@ public class MainView {
 		mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
 
 		initializeLeftPanel();
-		initializeRightPanel();
 		initializeStatusPanel();
 	}
 
 	private void initializeLeftPanel() {
 		corpTree = new CorpTree();
-		splitPane.add(corpTree, JSplitPane.LEFT);
-	}
-
-	private void initializeRightPanel() {
-		excelTabbedPane = new JTabbedPane();
-
-		ExcelPanel excelPanel1 = new ExcelPanel();
-		excelTabbedPane.add("资金表", excelPanel1);
-
-		ExcelPanel excelPanel2 = new ExcelPanel();
-		excelTabbedPane.add("现金流量表", excelPanel2);
-
-		ExcelPanel excelPanel3 = new ExcelPanel();
-		excelTabbedPane.add("负债表", excelPanel3);
-
-		splitPane.add(excelTabbedPane, JSplitPane.RIGHT);
+		splitPane.setLeftComponent(corpTree);
 	}
 
 	private void initializeStatusPanel() {
@@ -194,5 +180,9 @@ public class MainView {
 		statusBar.add(statusJL);
 
 		mainFrame.getContentPane().add(statusBar, BorderLayout.SOUTH);
+	}
+
+	public void setRightComponent(JComponent component) {
+		splitPane.setRightComponent(component);
 	}
 }

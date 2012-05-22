@@ -6,19 +6,24 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
 import com.mermaid.excelmerge.ui.model.TreeDataSource;
 import com.mermaid.excelmerge.ui.model.Corp;
+import com.mermaid.excelmerge.ui.util.FileCopy;
 
 public class CorpImportDialog extends JDialog implements java.awt.event.ActionListener {
 	private Corp corp;
@@ -34,7 +39,54 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 	public CorpImportDialog(Corp corp, TreeDataSource dataSource) {
 		this.corp = corp;
 		this.dataSource = dataSource;
+		initialize();
+	}
 
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+
+		if (source instanceof JButton) {
+			if (source.equals(confirmJB)) {
+				if (excelPathJTFArray != null) {
+					for (JTextField excelPathJTF:excelPathJTFArray) {
+						String name = excelPathJTF.getClientProperty("name").toString();
+						String path = excelPathJTF.getText().trim();
+
+						if (name != null && path.length() > 0) {
+							try {
+								String oldPath = corp.getExcel(name);
+								if (oldPath != null) {
+									File oldExcel = new File(oldPath);
+									if (oldExcel.exists())
+										oldExcel.delete();
+								}
+
+								long current = System.currentTimeMillis();
+								String newPath = dataSource.storage_dir;
+								newPath += corp.getName() + "-";
+								newPath += current + "-";
+								newPath += new File(path).getName();
+
+								FileCopy.copy(path, newPath);
+								corp.addExcel(name, new File(newPath).getAbsolutePath());
+
+								while (System.currentTimeMillis() == current)
+									Thread.sleep(1);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						}
+					}
+
+					dataSource.save();
+				}
+			}
+		}
+
+		this.dispose();
+	}
+
+	private void initialize() {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout());
@@ -55,7 +107,7 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 
 			excelPathJTFArray[i] = new JTextField();
 			excelPathJTFArray[i].setColumns(40);
-			excelPathJTFArray[i].putClientProperty("type", excelType[i]);
+			excelPathJTFArray[i].putClientProperty("name", excelType[i]);
 
 			gridBagConst.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConst.gridx = 1;
@@ -138,29 +190,8 @@ public class CorpImportDialog extends JDialog implements java.awt.event.ActionLi
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setModal(true);
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
-
-		if (source instanceof JButton) {
-			if (source.equals(confirmJB)) {
-				if (excelPathJTFArray != null) {
-					for (JTextField excelPathJTF:excelPathJTFArray) {
-						String type = excelPathJTF.getClientProperty("type").toString();
-						String path = excelPathJTF.getText().trim();
-
-						if (type != null && path.length() > 0) {
-							corp.removeExcel(type);
-							corp.addExcel(type, path);
-						}
-					}
-
-					dataSource.save();
-				}
-			}
-
-			this.dispose();
-		}
+		this.getRootPane().registerKeyboardAction(this, 
+				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 }

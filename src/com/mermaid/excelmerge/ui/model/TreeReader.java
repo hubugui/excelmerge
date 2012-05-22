@@ -25,76 +25,53 @@ import org.xml.sax.SAXException;
 import com.mermaid.excelmerge.ui.model.TreeNodeAccess.TreeNodeAccessCB;
 
 public class TreeReader {
-	private final static String VERSION = "1.0";
-	private final static String DESCRIPTOR = "excel merge data file";
-	private final static String CORP = "Mermaid";
-
-	private String path;
 	private Document document;
-	private TreeNode node;
+	private TreeNode root;
 
-	public TreeReader(String path, TreeNode node) throws ParserConfigurationException, IOException, SAXException {
-		this.path = path;
-		this.node = node;
+	public TreeReader(String path, TreeNode root) throws ParserConfigurationException, IOException, SAXException {
+		this.root = root;
 
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		this.document = dBuilder.parse(new File(path));
-		this.document.getDocumentElement().normalize();
+		File file = new File(path);
+		if (file.exists()) {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        	DocumentBuilder builder = factory.newDocumentBuilder();
+        	this.document = builder.parse(file);
+			this.document.getDocumentElement().normalize();
+		}
 	}
 
-	private boolean readExcel(Element element, Corp corp) {
-		NodeList nList = document.getElementsByTagName("excel");
+	private void readCorp(Element element, TreeNode node) {
+		NodeList nList = element.getChildNodes();
 
 		for (int idx = 0; idx < nList.getLength(); idx++) {
 			   Node nNode = nList.item(idx);
-
 			   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				   Element eElement = (Element) nNode;
-
+				   String elementName = eElement.getNodeName().toLowerCase();
 				   String name = eElement.getAttribute("name");
-				   String path = eElement.getAttribute("path");
 
-				   corp.removeExcel(name);
-				   corp.addExcel(name, path);				   
+				   if (elementName.equals("excel")) {
+					   String path = eElement.getAttribute("path");
+
+					   Corp corp = (Corp) ((DefaultMutableTreeNode) node).getUserObject();
+					   corp.addExcel(name, path);
+				   } else if (elementName.equals("corp")) {					   
+					   int id = Integer.parseInt(eElement.getAttribute("id"));
+
+					   DefaultMutableTreeNode child = new DefaultMutableTreeNode(new Corp(id, name));
+					   ((DefaultMutableTreeNode) node).add(child);
+
+					   readCorp(eElement, child);
+				   }
 			   }
 		}
-		
-		return true;
-	}
-
-	private boolean read() {
-		NodeList nList = document.getElementsByTagName("corp");
-
-		for (int idx = 0; idx < nList.getLength(); idx++) {
-			   Node nNode = nList.item(idx);
-
-			   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				   Element eElement = (Element) nNode;
-				   
-				   String name = eElement.getAttribute("name");
-				   int id = Integer.parseInt(eElement.getAttribute("id"));
-
-				   Corp corp = new Corp(id, name);
-				   readExcel(eElement, corp);
-				   
-				   ((DefaultMutableTreeNode) node).add(new DefaultMutableTreeNode(corp));
-			   }
-		}
-		
-		return true;
 	}
 
 	public boolean load() {
-		boolean rc = true;
-
-		try {
-			read();
-		} catch (Exception ex) {
-			rc = false;
-			ex.printStackTrace();
-		}
-
-		return rc;
+		if (document != null) {
+			readCorp(document.getDocumentElement(), root);
+			return true;
+		} else
+			return false;
 	}
 }

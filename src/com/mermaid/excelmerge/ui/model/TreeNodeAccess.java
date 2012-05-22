@@ -7,7 +7,12 @@ public class TreeNodeAccess {
 		TreeNode node = root;
 
 		if (node != null) {
-			Object newUserData = cb.access(node, depth, userData);
+			Object newUserData;
+
+			if (depth > 0)
+				newUserData = cb.access(node, depth, userData);
+			else
+				newUserData = userData;
 
 			int childCount = node.getChildCount();
 			for (int i = 0; i < childCount; i++) {

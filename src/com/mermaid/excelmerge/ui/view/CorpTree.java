@@ -3,6 +3,8 @@ package com.mermaid.excelmerge.ui.view;
 import java.util.Enumeration;
 
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -30,8 +32,6 @@ public class CorpTree extends JTree {
 		this.setDropTarget(new TreeDropTarget(handler));
 		this.setDragEnabled(true);
 		this.setModel(new DefaultTreeModel(getSampleTreeRoot(), false));
-
-		expandTree(this);
 	}
 
 	public void expandTree(JTree tree) {
@@ -39,9 +39,9 @@ public class CorpTree extends JTree {
 
 		Enumeration e = root.breadthFirstEnumeration();
 		while (e.hasMoreElements()) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();			
 			if (node.isLeaf())
-				continue;
+				continue;			
 			int row = tree.getRowForPath(new TreePath(node.getPath()));
 			tree.expandRow(row);
 		}
@@ -59,7 +59,7 @@ public class CorpTree extends JTree {
 	 */
 	private TreeNode getSampleTreeRoot() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new Corp(id++, "根"));
-		addNodes(root, new String[] {default_node_name + " " + id});
+		// addNodes(root, new String[] {default_node_name + " " + id});
 		return root;
 	}
 
@@ -93,8 +93,8 @@ public class CorpTree extends JTree {
 			Object o = selectedPath.getLastPathComponent();
 			if (o != null) {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getSelectionPath().getLastPathComponent();
-				Region newItem = new Corp(id, default_node_name + " " + id++);
-
+				Region newItem = new Corp(id, default_node_name + " " + id++);				
+				
 				Region parentRegion = (Region) selectedNode.getUserObject();
 				newItem.setParentId(parentRegion.getId());
 
