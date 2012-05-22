@@ -4,7 +4,8 @@
 	<property name="basedir" value="."/>
 	<property name="project.name" value="excelmerge"/>
 	<property name="bin.dir" value="${basedir}/bin"/>
-	<property name="src.dir" value="${basedir}/src" /> 
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="libs.dir" value="${basedir}/libs" />
 	<property name="classes.dir" value="${basedir}/classes" /> 
 	<property name="jar.file" value="${basedir}/${project.name}.jar" />
 
@@ -19,14 +20,32 @@
 		<mkdir dir="${classes.dir}" />
 	</target>
 
+	<pathconvert property="libs.project" pathsep=" ">
+		<mapper>
+			<chainedmapper>
+				<!-- remove absolute path -->
+				<flattenmapper />
+				<!-- add lib/ prefix -->
+				<globmapper from="*" to="libs/*" />
+			</chainedmapper>
+		</mapper>
+		<path>
+			<!-- lib.home contains all jar files, in several subdirectories -->
+			<fileset dir="${libs.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+	</pathconvert>
+
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" encoding="utf-8" includeantruntime="false" debug="true">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpath="libs/jxl.jar" encoding="utf-8" includeantruntime="false" debug="true">
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 
 		<jar basedir="${classes.dir}" destfile="${jar.file}">
 			<manifest>
 				<attribute name="Main-Class" value="com.mermaid.excelmerge.ui.Main" />
+				<attribute name="Class-Path" value="${libs.project}" />
 			</manifest>
 
 			<fileset dir="${src.dir}" includes="**/resources/**"/>

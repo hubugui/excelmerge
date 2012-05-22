@@ -33,6 +33,7 @@ public class Corp extends Region {
 		return excelTable.size();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CorpExcel> getAll() {
 		List<CorpExcel> list = new LinkedList<CorpExcel>();
 
